@@ -1,0 +1,136 @@
+Example of File Upload in JSP
+
+In this example, we are creating two files only, index.jsp and fileupload.jsp.
+index.jsp
+
+To upload the file to the server, there are two requirements:
+
+    You must use the post request.
+    encodeType should be multipart/form-data that gives information to the server that you are going to upload the file.
+
+    <form action="upload.jsp" method="post" enctype="multipart/form-data">  
+    Select File:<input type="file" name="fname"/><br/>  
+    <input type="image" src="MainUpload.png"/>  
+    </form>  
+
+upload.jsp
+
+We are uploading the incoming file to the location d:/new, you can specify your location here.
+
+    <%@ page import="com.oreilly.servlet.MultipartRequest" %>  
+    <%  
+    MultipartRequest m = new MultipartRequest(request, "d:/new");  
+    out.print("successfully uploaded");  
+      
+    %>  
+
+If size of the file is greater than 1MB, you should specify the post size.
+
+--------------------------------------------------------------------------------------------------------------------------
+
+Example of Downloading file from the server using JSP
+
+In this example, we are going to download the jsp file. But you may download any file. For downloading the file from the server, you should specify the content type named APPLICATION/OCTET-STREAM.
+index.jsp
+
+This file provides a link to download the jsp file.
+
+    <a href="download.jsp">download the jsp file</a>  
+
+download.jsp
+
+In this example, we are downloading the file home.jsp which is located in the e: drive. You may change this location accordingly.
+
+    <%    
+      String filename = "home.jsp";   
+      String filepath = "e:\\";   
+      response.setContentType("APPLICATION/OCTET-STREAM");   
+      response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");   
+      
+      java.io.FileInputStream fileInputStream=new java.io.FileInputStream(filepath + filename);  
+                
+      int i;   
+      while ((i=fileInputStream.read()) != -1) {  
+        out.write(i);   
+      }   
+      fileInputStream.close();   
+    %>   
+    
+-----------------------------------------------------------------------------------------------------------------------------
+
+Example of JSP request implicit object
+index.html
+
+    <form action="welcome.jsp">  
+    <input type="text" name="uname">  
+    <input type="submit" value="go"><br/>  
+    </form>  
+
+welcome.jsp
+
+    <%   
+    String name=request.getParameter("uname");  
+    out.print("welcome "+name);  
+    %>  
+
+-----------------------------------------------------------------------------------
+
+Example of response implicit object
+index.html
+
+    <form action="welcome.jsp">  
+    <input type="text" name="uname">  
+    <input type="submit" value="go"><br/>  
+    </form>  
+
+welcome.jsp
+
+    <%   
+    response.sendRedirect("http://www.google.com");  
+    %>  
+    
+--------------------------------------------------------------------------------------
+
+Example of session implicit object
+index.html
+
+    <html>  
+    <body>  
+    <form action="welcome.jsp">  
+    <input type="text" name="uname">  
+    <input type="submit" value="go"><br/>  
+    </form>  
+    </body>  
+    </html>  
+
+welcome.jsp
+
+    <html>  
+    <body>  
+    <%   
+      
+    String name=request.getParameter("uname");  
+    out.print("Welcome "+name);  
+      
+    session.setAttribute("user",name);  
+      
+    <a href="second.jsp">second jsp page</a>  
+      
+    %>  
+    </body>  
+    </html>  
+
+second.jsp
+
+    <html>  
+    <body>  
+    <%   
+      
+    String name=(String)session.getAttribute("user");  
+    out.print("Hello "+name);  
+      
+    %>  
+    </body>  
+    </html>  
+    
+---------------------------------------------------------------------------------------
